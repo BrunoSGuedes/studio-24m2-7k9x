@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Apartamento 24m² — Estúdio de Projeto 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h1>Meu Apartamento 3D</h1>
+          <span class="subtitle">Planta 24 m² · Configurador Interativo</span>
+        </div>
+      </div>
+
+      <!-- Camera Presets -->
+      <div class="camera-bar" role="group" aria-label="Câmeras">
+        <button class="cam-btn active" data-cam="iso" title="Perspectiva 3D">3D</button>
+        <button class="cam-btn" data-cam="top" title="Planta Baixa (Topo)">Planta</button>
+        <button class="cam-btn" data-cam="sala" title="Vista da Sala">Sala</button>
+        <button class="cam-btn" data-cam="quarto" title="Vista do Quarto">Quarto</button>
+        <button class="cam-btn" data-cam="cozinha" title="Vista da Cozinha">Cozinha</button>
+        <button class="cam-btn" data-cam="banheiro" title="Vista do Banheiro">Banheiro</button>
+        <button class="cam-btn" data-cam="teto" title="Olhar para o Teto Rebaixado">Ver Teto</button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="top-actions">
+        <div class="pill-group" title="Modo das Paredes">
+          <button class="pill-btn active" data-wallmode="cutaway" title="Recorte automático para enxergar dentro">Recorte</button>
+          <button class="pill-btn" data-wallmode="full" title="Paredes completas">Inteiras</button>
+          <button class="pill-btn" data-wallmode="low" title="Paredes baixas">Baixas</button>
+        </div>
+
+        <button class="icon-btn" id="btn-measures" title="Mostrar/Ocultar Medidas e Cômodos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4Z"/>
+            <path d="m7.5 10.5 2 2"/><path d="m10.5 7.5 2 2"/><path d="m13.5 4.5 2 2"/><path d="m4.5 13.5 2 2"/>
+          </svg>
+          <span>Medidas</span>
+        </button>
+
+        <button class="icon-btn" id="btn-daynight" title="Alternar Dia / Noite">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span id="daynight-label">Dia</span>
+        </button>
+
+        <button class="icon-btn" id="btn-screenshot" title="Baixar Foto do Projeto (PNG)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          <span>Foto</span>
+        </button>
+
+        <button class="icon-btn" id="btn-export" title="Exportar projeto (.json)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Salvar</span>
+        </button>
+
+        <button class="icon-btn" id="btn-import" title="Carregar projeto (.json)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>Abrir</span>
+        </button>
+        <input type="file" id="input-import" accept=".json" hidden />
+
+        <button class="icon-btn danger" id="btn-reset" title="Resetar para a planta original">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="workspace">
+      <!-- Left Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="mobile-drawer-header">
+          <span>Personalizar Apartamento</span>
+          <button class="close-btn" id="btn-mobile-close" title="Fechar painel">✕ Fechar</button>
+        </div>
+        <nav class="tab-nav">
+          <button class="tab-btn active" data-tab="pisos">
+            <span class="tab-icon">▦</span>
+            <span>Pisos</span>
+          </button>
+          <button class="tab-btn" data-tab="paredes">
+            <span class="tab-icon">▧</span>
+            <span>Paredes</span>
+          </button>
+          <button class="tab-btn" data-tab="teto">
+            <span class="tab-icon">☀</span>
+            <span>Teto & LED</span>
+          </button>
+          <button class="tab-btn" data-tab="moveis">
+            <span class="tab-icon">🛋</span>
+            <span>Móveis</span>
+          </button>
+          <button class="tab-btn" data-tab="quadros">
+            <span class="tab-icon">🖼</span>
+            <span>Quadros</span>
+          </button>
+        </nav>
+
+        <div class="tab-content">
+          <!-- TAB: PISOS -->
+          <section class="panel active" id="tab-pisos">
+            <div class="section-header">
+              <h2>Piso por Cômodo</h2>
+              <p>Escolha o ambiente e aplique porcelanato, vinílico ou laminado.</p>
+            </div>
+
+            <div class="control-group">
+              <label>Cômodo selecionado</label>
+              <div class="zone-grid" id="floor-zone-selector">
+                <button class="zone-btn active" data-zone="todos">Todos (24m²)</button>
+                <button class="zone-btn" data-zone="quarto">Quarto (~7,3m²)</button>
+                <button class="zone-btn" data-zone="sala">Sala/Jantar (~6,3m²)</button>
+                <button class="zone-btn" data-zone="cozinha">Cozinha/Serv. (~6,0m²)</button>
+                <button class="zone-btn" data-zone="banheiro">Banheiro (~3,2m²)</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Porcelanatos</label>
+              <div class="swatch-grid" id="floor-porcelanato-grid"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Madeira / Vinílico / Laminado</label>
+              <div class="swatch-grid" id="floor-wood-grid"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Formato da Peça (Porcelanato)</label>
+              <div class="segmented" id="tile-scale-selector">
+                <button data-scale="0.6" class="active">60×60 cm</button>
+                <button data-scale="0.8">80×80 cm</button>
+                <button data-scale="1.2">120×120 cm</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Acabamento / Brilho</label>
+              <div class="segmented" id="tile-finish-selector">
+                <button data-finish="polido">Polido</button>
+                <button data-finish="acetinado" class="active">Acetinado</button>
+                <button data-finish="fosco">Fosco</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Rodapé</label>
+              <div class="color-row" id="baseboard-color-row"></div>
+            </div>
+          </section>
+
+          <!-- TAB: PAREDES -->
+          <section class="panel" id="tab-paredes">
+            <div class="section-header">
+              <h2>Cores e Revestimentos</h2>
+              <p>Pinte o apartamento inteiro ou crie paredes de destaque (ripado, cimento queimado, boiserie).</p>
+            </div>
+
+            <div class="control-group">
+              <label>Onde aplicar</label>
+              <div class="zone-grid" id="wall-target-selector">
+                <button class="zone-btn active" data-wall="todas">Todas as Paredes</button>
+                <button class="zone-btn" data-wall="quarto_cab">Cabeceira Quarto</button>
+                <button class="zone-btn" data-wall="quarto_esq">Parede Esq. Quarto</button>
+                <button class="zone-btn" data-wall="sala_sofa">Parede do Sofá</button>
+                <button class="zone-btn" data-wall="sala_tv">Parede TV / Divisória</button>
+                <button class="zone-btn" data-wall="cozinha">Frontão Cozinha</button>
+                <button class="zone-btn" data-wall="banheiro">Paredes Banheiro</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Paleta de Tintas</label>
+              <div class="color-palette" id="wall-color-palette"></div>
+              <div class="custom-color-row">
+                <span>Cor personalizada:</span>
+                <input type="color" id="wall-custom-color" value="#f2efe9" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Revestimento / Textura Especial</label>
+              <div class="swatch-grid" id="wall-finish-grid"></div>
+            </div>
+          </section>
+
+          <!-- TAB: TETO & LED -->
+          <section class="panel" id="tab-teto">
+            <div class="section-header">
+              <h2>Teto Rebaixado & Iluminação</h2>
+              <p>Configure gesso, sanca aberta com LED, rasgos de luz, spots e temperatura de cor.</p>
+            </div>
+
+            <div class="control-group">
+              <label>Visualização do Teto</label>
+              <div class="segmented" id="ceiling-vis-selector">
+                <button data-cvis="hidden">Oculto</button>
+                <button data-cvis="semi">Translúcido</button>
+                <button data-cvis="visible" class="active">Visível</button>
+              </div>
+              <button class="full-btn accent-outline" id="btn-look-ceiling" style="margin-top:8px;">
+                ↑ Olhar de baixo para o Teto Rebaixado
+              </button>
+            </div>
+
+            <div class="control-group">
+              <label>Modelo do Projeto de Gesso</label>
+              <div class="ceiling-cards" id="ceiling-style-selector">
+                <button class="ceiling-card" data-style="laje">
+                  <strong>Laje Simples</strong>
+                  <span>Sem rebaixo, plafon central</span>
+                </button>
+                <button class="ceiling-card" data-style="tabica">
+                  <strong>Forro com Tabica</strong>
+                  <span>Sombra perimetral + spots</span>
+                </button>
+                <button class="ceiling-card active" data-style="sanca_aberta">
+                  <strong>Sanca Aberta + LED</strong>
+                  <span>Luz indireta contornando sala e quarto</span>
+                </button>
+                <button class="ceiling-card" data-style="sanca_ilha">
+                  <strong>Ilha Flutuante + LED</strong>
+                  <span>Rebaixo central com LED nas bordas</span>
+                </button>
+                <button class="ceiling-card" data-style="perfil_led">
+                  <strong>Perfis de LED Embutidos</strong>
+                  <span>Linhas contínuas modernas no gesso</span>
+                </button>
+                <button class="ceiling-card" data-style="trilho">
+                  <strong>Tabica + Trilho Eletrificado</strong>
+                  <span>Estilo contemporâneo/industrial</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Temperatura da Luz (LED e Spots)</label>
+              <div class="segmented" id="light-temp-selector">
+                <button data-temp="3000" class="active">3000K Quente</button>
+                <button data-temp="4000">4000K Neutra</button>
+                <button data-temp="6000">6000K Fria</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Controles de Iluminação</label>
+              <div class="toggle-list">
+                <label class="toggle-row">
+                  <span>Fita / Perfil de LED</span>
+                  <input type="checkbox" id="chk-led" checked />
+                </label>
+                <label class="toggle-row">
+                  <span>Spots Embutidos (Quarto e Sala)</span>
+                  <input type="checkbox" id="chk-spots-social" checked />
+                </label>
+                <label class="toggle-row">
+                  <span>Spots Cozinha e Banheiro</span>
+                  <input type="checkbox" id="chk-spots-wet" checked />
+                </label>
+              </div>
+              <div class="slider-row">
+                <span>Intensidade LED / Spots</span>
+                <input type="range" id="slider-light-intensity" min="0" max="2" step="0.1" value="1.1" />
+              </div>
+              <div class="slider-row">
+                <span>Altura do Rebaixo</span>
+                <input type="range" id="slider-drop-height" min="0.08" max="0.24" step="0.02" value="0.14" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Cor do Forro de Gesso</label>
+              <div class="color-row" id="ceiling-color-row"></div>
+            </div>
+          </section>
+
+          <!-- TAB: MÓVEIS -->
+          <section class="panel" id="tab-moveis">
+            <div class="section-header">
+              <h2>Móveis & Marcenaria</h2>
+              <p>Clique em um móvel no 3D para arrastar, girar ou mudar a cor, ou adicione novos itens.</p>
+            </div>
+
+            <div class="control-group">
+              <label>Adicionar Móvel / Item Extra</label>
+              <div class="add-furniture-grid" id="add-furniture-grid"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Móveis no Apartamento</label>
+              <div class="furniture-list" id="furniture-list"></div>
+            </div>
+          </section>
+
+          <!-- TAB: QUADROS -->
+          <section class="panel" id="tab-quadros">
+            <div class="section-header">
+              <h2>Quadros & Decoração</h2>
+              <p>Escolha composições, molduras, artes ou suba suas próprias fotos para as paredes.</p>
+            </div>
+
+            <div class="control-group">
+              <label>Parede do Quadro</label>
+              <div class="zone-grid" id="art-wall-selector">
+                <button class="zone-btn active" data-artwall="sofa">Parede do Sofá</button>
+                <button class="zone-btn" data-artwall="quarto">Parede Esq. Quarto</button>
+                <button class="zone-btn" data-artwall="jantar">Parede Mesa Jantar</button>
+                <button class="zone-btn" data-artwall="corredor">Hall / Entrada</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="toggle-row" style="margin-bottom:8px;">
+                <span>Exibir quadro nesta parede</span>
+                <input type="checkbox" id="art-enabled" checked />
+              </label>
+
+              <label>Composição</label>
+              <div class="segmented" id="art-layout-selector">
+                <button data-layout="1">1 Quadro</button>
+                <button data-layout="2">Dupla (2)</button>
+                <button data-layout="3" class="active">Trio (3)</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Estilo da Arte</label>
+              <div class="swatch-grid" id="art-theme-grid"></div>
+              <div style="margin-top:8px;">
+                <button class="full-btn" id="btn-upload-art">📷 Enviar Minha Própria Imagem</button>
+                <input type="file" id="input-upload-art" accept="image/*" hidden />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Cor da Moldura</label>
+              <div class="color-row" id="art-frame-color-row"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Tamanho e Posição</label>
+              <div class="slider-row">
+                <span>Escala</span>
+                <input type="range" id="art-scale" min="0.6" max="1.5" step="0.05" value="1.0" />
+              </div>
+              <div class="slider-row">
+                <span>Altura do chão</span>
+                <input type="range" id="art-height" min="1.15" max="1.95" step="0.02" value="1.55" />
+              </div>
+              <div class="slider-row">
+                <span>Deslocar na parede</span>
+                <input type="range" id="art-offset" min="-0.6" max="0.6" step="0.02" value="0" />
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <!-- 3D Viewport -->
+      <main class="viewport-wrap">
+        <div id="canvas-container"></div>
+
+        <!-- Mobile Drawer Toggle Button -->
+        <button class="mobile-menu-btn" id="btn-mobile-menu">🎨 Personalizar</button>
+
+        <!-- Room Dimension Labels Overlay -->
+        <div id="labels-overlay"></div>
+
+        <!-- Floating Inspector for Selected Furniture -->
+        <div class="inspector hidden" id="furniture-inspector">
+          <div class="inspector-header">
+            <strong id="insp-name">Móvel Selecionado</strong>
+            <button class="close-btn" id="insp-close" title="Fechar">✕</button>
+          </div>
+          <div class="inspector-body">
+            <div class="insp-row">
+              <span>Cor / Acabamento</span>
+              <div class="color-row compact" id="insp-colors"></div>
+            </div>
+            <div class="insp-row">
+              <span>Rotação</span>
+              <div class="btn-group-sm">
+                <button id="insp-rot-left">↺ -45°</button>
+                <button id="insp-rot-90">⟳ 90°</button>
+                <button id="insp-rot-right">↻ +45°</button>
+              </div>
+            </div>
+            <div class="insp-row">
+              <span>Posição (arraste no 3D ou use setas)</span>
+              <div class="nudge-grid">
+                <button data-dx="0" data-dz="-0.1">↑</button>
+                <button data-dx="-0.1" data-dz="0">←</button>
+                <button data-dx="0.1" data-dz="0">→</button>
+                <button data-dx="0" data-dz="0.1">↓</button>
+              </div>
+            </div>
+            <div class="insp-actions">
+              <button class="sm-btn" id="insp-toggle-vis">Ocultar</button>
+              <button class="sm-btn danger hidden" id="insp-delete">Remover</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Hint Pill -->
+        <div class="hint-bar">
+          <span><strong>Girar:</strong> Botão esquerdo</span>
+          <span>·</span>
+          <span><strong>Mover câmera:</strong> Botão direito</span>
+          <span>·</span>
+          <span><strong>Zoom:</strong> Scroll</span>
+          <span>·</span>
+          <span><strong>Mover móvel:</strong> Clique e arraste</span>
+        </div>
+
+        <!-- Toast notification -->
+        <div class="toast hidden" id="toast"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Three.js + OrbitControls (UMD compatible with both file:// and http://) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script src="textures.js"></script>
+  <script src="furniture.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
